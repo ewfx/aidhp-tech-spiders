@@ -57,7 +57,7 @@ def init_db():
             PRIMARY KEY (customer_id, product_id)
         )''')
 
-        # Populate tables with data (existing data from second code)
+    # Populate tables with data (existing data from second code)
     # Populate Customer Profile (Organization) table with expanded data
     org_data = [
         ('ORG_US_004', 'Fashion and Clothing', 'Supply Chain Financing, Inventory Loans, Retail Banking, Treasury Services, Cloud Platform', 'Direct-To-Customer eCommerce Platform', '150M-20M', '800-150'),
@@ -407,118 +407,187 @@ def get_llm_recommendations(customer_data, products):
         "products": product_list
     })
 
+
 def display_customer_profile(customer):
-    """
-    Create a visually appealing customer profile display
-    """
+    """Create a modern, visually appealing customer profile display"""
+    st.markdown("""
+        <style>
+            .profile-card { 
+                background: #ffffff; 
+                border-radius: 10px; 
+                padding: 20px; 
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+                margin-bottom: 20px;
+            }
+            .section-title {
+                color: #1a73e8;
+                font-size: 24px;
+                margin-bottom: 15px;
+                border-bottom: 2px solid #1a73e8;
+                padding-bottom: 5px;
+            }
+            .info-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+            .info-item {
+                background: #f8f9fa;
+                padding: 10px;
+                border-radius: 5px;
+            }
+            .social-post {
+                background: #f1f8ff;
+                padding: 15px;
+                border-radius: 8px;
+                margin: 10px 0;
+                border-left: 4px solid #1a73e8;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Profile Header
     if customer.get('type') == 'individual':
-        st.markdown("## 👤 Customer Profile")
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown(f"""
-            ### Personal Information
-            - **Name**: {customer.get('customer_id', 'N/A')}
-            - **Age**: {customer.get('age', 'N/A')} years
-            - **Gender**: {customer.get('gender', 'N/A')}
-            - **Location**: {customer.get('location', 'N/A')}
-            """)
-        
-        with col2:
-            st.markdown(f"""
-            ### Professional Details
-            - **Occupation**: {customer.get('occupation', 'N/A')}
-            - **Education**: {customer.get('education', 'N/A')}
-            - **Annual Income**: ${customer.get('income_per_year', 'N/A'):,}
-            """)
-        
-        st.markdown(f"""
-        ### Interests & Preferences
-        - **Interests**: {customer.get('interests', 'N/A')}
-        - **Preferences**: {customer.get('preferences', 'N/A')}
-        """)
+        st.markdown('<div class="profile-card"><h2 class="section-title">👤 Individual Profile</h2>', unsafe_allow_html=True)
+        st.markdown('<div class="info-grid">', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-item"><b>ID:</b> {customer.get("customer_id", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-item"><b>Age:</b> {customer.get("age", "N/A")} years</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-item"><b>Gender:</b> {customer.get("gender", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-item"><b>Location:</b> {customer.get("location", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-item"><b>Occupation:</b> {customer.get("occupation", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-item"><b>Education:</b> {customer.get("education", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.metric("Annual Income", f"${customer.get('income_per_year', 0):,}")
+        st.markdown(f'<b>Interests:</b> {customer.get("interests", "N/A")}', unsafe_allow_html=True)
+        st.markdown(f'<b>Preferences:</b> {customer.get("preferences", "N/A")}', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     elif customer.get('type') == 'organization':
-        st.markdown("## 🏢 Organization Profile")
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown(f"""
-            ### Company Information
-            - **ID**: {customer.get('customer_id', 'N/A')}
-            - **Industry**: {customer.get('industry', 'N/A')}
-            - **Revenue Range**: {customer.get('revenue_range', 'N/A')}
-            - **Employee Count**: {customer.get('employee_count_range', 'N/A')}
-            """)
-        
-        with col2:
-            st.markdown(f"""
-            ### Financial Details
-            - **Financial Needs**: {customer.get('financial_needs', 'N/A')}
-            - **Preferences**: {customer.get('preferences', 'N/A')}
-            """)
+        st.markdown('<div class="profile-card"><h2 class="section-title">🏢 Organization Profile</h2>', unsafe_allow_html=True)
+        st.markdown('<div class="info-grid">', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-item"><b>ID:</b> {customer.get("customer_id", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-item"><b>Industry:</b> {customer.get("industry", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-item"><b>Revenue:</b> {customer.get("revenue_range", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="info-item"><b>Employees:</b> {customer.get("employee_count_range", "N/A")}</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown(f'<b>Financial Needs:</b> {customer.get("financial_needs", "N/A")}', unsafe_allow_html=True)
+        st.markdown(f'<b>Preferences:</b> {customer.get("preferences", "N/A")}', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # Social Media Insights
     if customer.get('social_media'):
-        st.markdown("## 💬 Social Media Insights")
-        for post in customer['social_media'][:3]:  # Show top 3 posts
+        st.markdown('<div class="profile-card"><h2 class="section-title">💬 Social Media Insights</h2>', unsafe_allow_html=True)
+        for post in customer['social_media'][:3]:
+            sentiment_color = "#2ecc71" if float(post.get('sentiment_score', 0)) > 0 else "#e74c3c"
             st.markdown(f"""
-            > **{post.get('platform', 'Platform')}** | {post.get('timestamp', 'Date')}
-            > *{post.get('content', 'No content')}*
-            > Sentiment: {post.get('sentiment_score', 'N/A')} | Intent: {post.get('intent', 'N/A')}
-            """)
+                <div class="social-post">
+                    <b>{post.get('platform', 'Platform')} | {post.get('timestamp', 'Date')}</b><br>
+                    <i>{post.get('content', 'No content')}</i><br>
+                    <small style="color:{sentiment_color}">Sentiment: {post.get('sentiment_score', 'N/A')}</small> | 
+                    <small>Intent: {post.get('intent', 'N/A')}</small>
+                </div>
+            """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # Transaction Summary
     if customer.get('transactions'):
-        st.markdown("## 💳 Transaction Summary")
+        st.markdown('<div class="profile-card"><h2 class="section-title">💳 Transaction Summary</h2>', unsafe_allow_html=True)
         total_spend = sum(tx.get('amount_usd', 0) for tx in customer['transactions'])
         categories = {}
         for tx in customer['transactions']:
             cat = tx.get('category', 'Other')
             categories[cat] = categories.get(cat, 0) + tx.get('amount_usd', 0)
         
-        st.markdown(f"""
-        - **Total Transactions**: {len(customer['transactions'])}
-        - **Total Spend**: ${total_spend:,}
-        
-        ### Spend by Category:
-        """)
-        for cat, amount in sorted(categories.items(), key=lambda x: x[1], reverse=True)[:3]:
-            st.markdown(f"- **{cat}**: ${amount:,}")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Total Transactions", len(customer['transactions']))
+            st.metric("Total Spend", f"${total_spend:,}")
+        with col2:
+            st.markdown("### Top Categories")
+            for cat, amount in sorted(categories.items(), key=lambda x: x[1], reverse=True)[:3]:
+                st.markdown(f"- **{cat}**: ${amount:,}")
+        st.markdown('</div>', unsafe_allow_html=True)
 
 def main():
     st.set_page_config(page_title="Banking Recommender", page_icon="🏦", layout="wide")
+    
+    # Custom CSS for recommendations
+    st.markdown("""
+        <style>
+            .recommendation-card {
+                background: #ffffff;
+                border-radius: 10px;
+                padding: 15px;
+                margin: 10px 0;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                transition: transform 0.2s;
+            }
+            .recommendation-card:hover {
+                transform: translateY(-5px);
+            }
+            .recommendation-title {
+                color: #2e7d32;
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+            .recommendation-score {
+                background: #e8f5e9;
+                padding: 5px 10px;
+                border-radius: 15px;
+                font-size: 12px;
+                color: #2e7d32;
+            }
+            .llm-recommendations {
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 10px;
+                margin-top: 20px;
+            }
+            .control-container {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
     st.title("🏦 Banking Product Recommender")
     
-    customer_id = st.selectbox("Select Customer", get_all_customer_ids())
-    
-    if st.button("Generate Recommendations"):
-        with st.spinner("Analyzing..."):
-            customer = get_customer_details(customer_id)
-            if not customer:
-                st.error("Customer not found")
-                return
-            
-            with st.expander("Customer Profile", expanded=True):
-                display_customer_profile(customer)
-            
-            products = vector_search(customer)
-            if products:
-                cols = st.columns(3)
-                for idx, prod in enumerate(products[:6]):
-                    with cols[idx%3]:
+    # Controls in a single row
+    with st.container():
+        st.markdown('<div class="control-container">', unsafe_allow_html=True)
+        customer_id = st.selectbox("Select Customer", get_all_customer_ids(), key="customer_select")
+        st.markdown('<div style="margin-top: 8px;">', unsafe_allow_html=True)  # Align button vertically
+        if st.button("Generate Recommendations", key="generate_button"):
+            with st.spinner("Analyzing..."):
+                customer = get_customer_details(customer_id)
+                if not customer:
+                    st.error("Customer not found")
+                    return
+                
+                with st.expander("Customer Profile", expanded=True):
+                    display_customer_profile(customer)
+                
+                products = vector_search(customer)
+                if products:
+                    st.markdown("## Recommended Products")
+                    for prod in products[:6]:
                         st.markdown(f"""
-                            <div style="border:1px solid #ddd; border-radius:8px; padding:15px; margin:10px;">
-                                <h4 style="margin:0; color:#2e7d32">{prod['name']}</h4>
-                                <p style="color:#666">{prod['description']}</p>
-                                <small>Match: {prod['similarity']}</small>
+                            <div class="recommendation-card">
+                                <div class="recommendation-title">{prod['name']}</div>
+                                <p>{prod['description']}</p>
+                                <span class="recommendation-score">Match: {prod['similarity']}</span>
                             </div>
                         """, unsafe_allow_html=True)
-                
-                st.divider()
-                st.markdown(get_llm_recommendations(customer, products))
-            else:
-                st.warning("No matching products found")
+                    
+                    st.markdown('<div class="llm-recommendations">', unsafe_allow_html=True)
+                    st.markdown("### LLM-Powered Recommendations")
+                    st.markdown(get_llm_recommendations(customer, products))
+                    st.markdown('</div>', unsafe_allow_html=True)
+                else:
+                    st.warning("No matching products found")
+        st.markdown('</div></div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
