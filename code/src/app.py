@@ -407,17 +407,6 @@ def get_llm_recommendations(customer_data, products):
         "products": product_list
     })
 
-import os
-import sqlite3
-import streamlit as st
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_community.vectorstores import FAISS
-from typing import List, Dict, Optional
-
-# [Previous code remains the same up to the main() function]
-
 def display_customer_profile(customer):
     """
     Create a visually appealing customer profile display
