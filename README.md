@@ -38,22 +38,24 @@ Describe the major technical or non-technical challenges your team encountered.
 ## 🏃 How to Run
 1. Clone the repository  
    ```sh
-   git clone https://github.com/your-repo.git
+   git clone https://github.com/ewfx/aidhp-tech-spiders.git
    ```
 2. Install dependencies  
    ```sh
-   npm install  # or pip install -r requirements.txt (for Python)
+   pip install -r requirements.txt (for Python)
    ```
 3. Run the project  
    ```sh
-   npm start  # or python app.py
+   python app.py
    ```
 
 ## 🏗️ Tech Stack
-- 🔹 Frontend: React / Vue / Angular
-- 🔹 Backend: Node.js / FastAPI / Django
-- 🔹 Database: PostgreSQL / Firebase
-- 🔹 Other: OpenAI API / Twilio / Stripe
+- 🔹 Frontend: Streamlit UI
+- 🔹 Backend: Python
+- 🔹 Database: SQL lite
+- 🔹 Search: Vector Search, FAISS Index, OpenAI Embeddings
+- 🔹 Models: LLM , Langchain, GPT-4o, ChartPrompt
+- 🔹 Other: OpenAI API / ChatOpenAI
 
 ## 👥 Team
 - **Your Name** - [GitHub](#) | [LinkedIn](#)
