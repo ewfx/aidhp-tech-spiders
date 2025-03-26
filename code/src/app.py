@@ -407,6 +407,96 @@ def get_llm_recommendations(customer_data, products):
         "products": product_list
     })
 
+import os
+import sqlite3
+import streamlit as st
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_community.vectorstores import FAISS
+from typing import List, Dict, Optional
+
+# [Previous code remains the same up to the main() function]
+
+def display_customer_profile(customer):
+    """
+    Create a visually appealing customer profile display
+    """
+    if customer.get('type') == 'individual':
+        st.markdown("## 👤 Customer Profile")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown(f"""
+            ### Personal Information
+            - **Name**: {customer.get('customer_id', 'N/A')}
+            - **Age**: {customer.get('age', 'N/A')} years
+            - **Gender**: {customer.get('gender', 'N/A')}
+            - **Location**: {customer.get('location', 'N/A')}
+            """)
+        
+        with col2:
+            st.markdown(f"""
+            ### Professional Details
+            - **Occupation**: {customer.get('occupation', 'N/A')}
+            - **Education**: {customer.get('education', 'N/A')}
+            - **Annual Income**: ${customer.get('income_per_year', 'N/A'):,}
+            """)
+        
+        st.markdown(f"""
+        ### Interests & Preferences
+        - **Interests**: {customer.get('interests', 'N/A')}
+        - **Preferences**: {customer.get('preferences', 'N/A')}
+        """)
+
+    elif customer.get('type') == 'organization':
+        st.markdown("## 🏢 Organization Profile")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown(f"""
+            ### Company Information
+            - **ID**: {customer.get('customer_id', 'N/A')}
+            - **Industry**: {customer.get('industry', 'N/A')}
+            - **Revenue Range**: {customer.get('revenue_range', 'N/A')}
+            - **Employee Count**: {customer.get('employee_count_range', 'N/A')}
+            """)
+        
+        with col2:
+            st.markdown(f"""
+            ### Financial Details
+            - **Financial Needs**: {customer.get('financial_needs', 'N/A')}
+            - **Preferences**: {customer.get('preferences', 'N/A')}
+            """)
+
+    # Social Media Insights
+    if customer.get('social_media'):
+        st.markdown("## 💬 Social Media Insights")
+        for post in customer['social_media'][:3]:  # Show top 3 posts
+            st.markdown(f"""
+            > **{post.get('platform', 'Platform')}** | {post.get('timestamp', 'Date')}
+            > *{post.get('content', 'No content')}*
+            > Sentiment: {post.get('sentiment_score', 'N/A')} | Intent: {post.get('intent', 'N/A')}
+            """)
+
+    # Transaction Summary
+    if customer.get('transactions'):
+        st.markdown("## 💳 Transaction Summary")
+        total_spend = sum(tx.get('amount_usd', 0) for tx in customer['transactions'])
+        categories = {}
+        for tx in customer['transactions']:
+            cat = tx.get('category', 'Other')
+            categories[cat] = categories.get(cat, 0) + tx.get('amount_usd', 0)
+        
+        st.markdown(f"""
+        - **Total Transactions**: {len(customer['transactions'])}
+        - **Total Spend**: ${total_spend:,}
+        
+        ### Spend by Category:
+        """)
+        for cat, amount in sorted(categories.items(), key=lambda x: x[1], reverse=True)[:3]:
+            st.markdown(f"- **{cat}**: ${amount:,}")
+
 def main():
     st.set_page_config(page_title="Banking Recommender", page_icon="🏦", layout="wide")
     st.title("🏦 Banking Product Recommender")
@@ -420,8 +510,8 @@ def main():
                 st.error("Customer not found")
                 return
             
-            with st.expander("Profile Details"):
-                st.json(customer)
+            with st.expander("Customer Profile", expanded=True):
+                display_customer_profile(customer)
             
             products = vector_search(customer)
             if products:
