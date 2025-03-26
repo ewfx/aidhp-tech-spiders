@@ -1,4 +1,4 @@
-# 🚀 Project Name
+# 🚀 Hyper-Personalization in Banking 
 
 ## 📌 Table of Contents
 - [Introduction](#introduction)
